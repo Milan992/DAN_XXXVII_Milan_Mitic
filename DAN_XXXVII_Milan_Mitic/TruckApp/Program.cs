@@ -17,6 +17,7 @@ namespace TruckApp
         static Random random = new Random();
         static Thread[] trucks = new Thread[10];
         static Semaphore semaphore = new Semaphore(2, 2);
+        static Semaphore s = new Semaphore(10, 10);
         static int routTime;
         static int i = -1;
 
@@ -113,13 +114,26 @@ namespace TruckApp
             semaphore.Release();
             i++;
             Console.WriteLine("\n{0} gets the rout {1}", Thread.CurrentThread.Name, chosenRoutes[i]);
+
+            while (i < 9)
+            {
+                s.WaitOne();
+            }
+
+            Thread.Sleep(4);
             routTime = random.Next(500, 5001);
+            s.Release();
             Thread order = new Thread(() => Rout(routTime, timeFilling));
             order.Name = Thread.CurrentThread.Name;
             order.Start();
             Console.WriteLine("\n{0} notifies the order that he will arrive in {1} miliseconds", Thread.CurrentThread.Name, routTime);
         }
 
+        /// <summary>
+        /// simulates unloading a truck.
+        /// </summary>
+        /// <param name="routTime"></param>
+        /// <param name="timeFilling"></param>
         public static void Rout(int routTime, int timeFilling)
         {
             if (routTime < 3000)
