@@ -24,6 +24,15 @@ namespace TruckApp
 
             begin.Start();
             manager.Start();
+            manager.Join();
+
+            for (int i = 0; i < 10; i++)
+            {
+                Thread t = new Thread(() => FillTruck());
+                t.Name = "Truck_" + Convert.ToString(i + 1);
+                t.Start();
+            }
+            
             Console.ReadLine();
         }
 
@@ -75,6 +84,13 @@ namespace TruckApp
                 Console.WriteLine("\nRout {0} is chosen", chosenRoutes[i]);
                 divisable.Remove(divisable.Min());
             }
+        }
+
+        private static void FillTruck()
+        {
+            int timeFilling = random.Next(500, 5001);
+            Thread.Sleep(timeFilling);
+            Console.WriteLine("\n{0} was filled in {1} miliseconds", Thread.CurrentThread.Name, timeFilling);
         }
     }
 }
