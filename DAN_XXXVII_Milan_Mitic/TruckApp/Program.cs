@@ -18,6 +18,7 @@ namespace TruckApp
 
         static void Main(string[] args)
         {
+            File.WriteAllText(@"..\..\possibleRoutes.txt", "");
             Thread begin = new Thread(() => GenerateRoutNumber());
             Thread manager = new Thread(() => ChooseRoute());
 
@@ -49,7 +50,7 @@ namespace TruckApp
 
         private static void ChooseRoute()
         {
-            Thread.Sleep(3000);
+            Thread.Sleep(random.Next(1, 3001));
             Console.WriteLine("\nManager notifies drivers that routes are chosen");
             try
             {
