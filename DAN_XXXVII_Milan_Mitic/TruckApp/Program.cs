@@ -23,6 +23,7 @@ namespace TruckApp
 
             begin.Start();
             manager.Start();
+            Console.ReadLine();
         }
 
         public static void GenerateRoutNumber()
@@ -50,7 +51,6 @@ namespace TruckApp
         {
             Thread.Sleep(3000);
             Console.WriteLine("\nManager notifies drivers that routes are chosen");
-            int counter = 0;
             try
             {
                 using (StreamReader sr = new StreamReader(@"..\..\possibleRoutes.txt"))
@@ -58,14 +58,9 @@ namespace TruckApp
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (Convert.ToInt32(line) / 3 == 0)
+                        if (Convert.ToInt32(line) % 3 == 0)
                         {
                             divisable.Add(Convert.ToInt32(line));
-                            if (counter < 10)
-                            {
-                                chosenRoutes[counter] = Convert.ToInt32(line);
-                                counter++;
-                            }
                         }
                     }
                 }
@@ -73,13 +68,11 @@ namespace TruckApp
             catch (Exception e)
             {
             }
-
-            for (int i = 0; i < divisable.Count; i++)
+            for (int i = 0; i < chosenRoutes.Length; i++)
             {
-                if (chosenRoutes[i] > divisable[i])
-                {
-                    chosenRoutes[i] = divisable[i];
-                }
+                chosenRoutes[i] = divisable.Min();
+                Console.WriteLine("\nRout {0} is chosen", chosenRoutes[i]);
+                divisable.Remove(divisable.Min());
             }
         }
     }
