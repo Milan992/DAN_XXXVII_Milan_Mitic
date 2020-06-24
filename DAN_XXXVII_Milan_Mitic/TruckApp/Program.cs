@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace TruckApp
 {
@@ -16,10 +14,11 @@ namespace TruckApp
         static int[] chosenRoutes = new int[10];
         static Random random = new Random();
         static Thread[] trucks = new Thread[10];
-        static Semaphore semaphore = new Semaphore(2, 2);
+        static SemaphoreSlim semaphore = new SemaphoreSlim(2);
         static Semaphore s = new Semaphore(10, 10);
         static int routTime;
         static int i = -1;
+        static int a = 0;
 
         static void Main(string[] args)
         {
@@ -94,6 +93,7 @@ namespace TruckApp
             catch (Exception e)
             {
             }
+            //get minimum value from the list and then remove it from the list as much times as the array's lenght is.
             for (int i = 0; i < chosenRoutes.Length; i++)
             {
                 chosenRoutes[i] = divisable.Min();
@@ -107,11 +107,17 @@ namespace TruckApp
         /// </summary>
         public static void FillTruck()
         {
-            semaphore.WaitOne();
+            a++;
+            while (a != 2)
+            {
+                semaphore.Wait();
+            }
             int timeFilling = random.Next(500, 5001);
             Thread.Sleep(timeFilling);
             Console.WriteLine("\n{0} was filled in {1} miliseconds", Thread.CurrentThread.Name, timeFilling);
             semaphore.Release();
+            a = 2;
+
             i++;
             Console.WriteLine("\n{0} gets the rout {1}", Thread.CurrentThread.Name, chosenRoutes[i]);
 
