@@ -92,6 +92,7 @@ namespace TruckApp
             catch (Exception e)
             {
             }
+
             //get minimum value from the list and then remove it from the list as much times as the array's lenght is.
             for (int i = 0; i < chosenRoutes.Length; i++)
             {
