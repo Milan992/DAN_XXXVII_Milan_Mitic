@@ -18,7 +18,6 @@ namespace TruckApp
         static Semaphore s = new Semaphore(10, 10);
         static int routTime;
         static int i = -1;
-        static int a = 0;
 
         static void Main(string[] args)
         {
@@ -107,16 +106,11 @@ namespace TruckApp
         /// </summary>
         public static void FillTruck()
         {
-            a++;
-            while (a != 2)
-            {
-                semaphore.Wait();
-            }
+            semaphore.Wait();
             int timeFilling = random.Next(500, 5001);
-            Thread.Sleep(timeFilling);
+            Thread.Sleep(5000);
             Console.WriteLine("\n{0} was filled in {1} miliseconds", Thread.CurrentThread.Name, timeFilling);
             semaphore.Release();
-            a = 2;
 
             i++;
             Console.WriteLine("\n{0} gets the rout {1}", Thread.CurrentThread.Name, chosenRoutes[i]);
